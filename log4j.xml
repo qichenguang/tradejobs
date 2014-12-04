@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+		<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN"
+				"http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd" >
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" threshold="debug" debug="true">
+	<!-- 控制台 -->
+	<appender name="console.CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<param name="threshold" value="debug" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%-5p][%d{yyyy-MM-dd HH:mm:ss,SSS}][%c] :%m%n" />
+		</layout>
+	</appender>
+
+	<!-- 系统应用级别日志 -->
+	<appender name="file.text.SYS.APP.FILE" class="org.apache.log4j.RollingFileAppender">
+		<param name="threshold" value="error" />
+		<param name="file" value="${catalina.home}/mybatislogs/mybatis_demo.sys.log" />
+		<param name="maxFileSize" value="1M" />
+		<param name="maxBackupIndex" value="5" />
+		<param name="append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%-5p][%d{yyyy-MM-dd HH:mm:ss,SSS}][%c] :%m%n" />
+		</layout>
+	</appender>
+
+	<!-- 每天的日志 -->
+	<appender name="file.text.DATE.FILE" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="threshold" value="debug" />
+		<param name="file" value="${catalina.home}/mybatislogs/mybatis_demo.date.log" />
+		<param name="append" value="true" />
+		<param name="datePattern" value="'.'yyy-MM-dd" />
+		<!-- <param name="datePattern" value="'.'yyy-MM-dd-HH"/> -->
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%-5p][%d{yyyy-MM-dd HH:mm:ss,SSS}][%c] :%m%n" />
+		</layout>
+	</appender>
+
+	<!-- HTML形式的错误日志 -->
+	<appender name="file.html.HTML" class="org.apache.log4j.RollingFileAppender">
+		<param name="threshold" value="error" />
+		<param name="file" value="${catalina.home}/mybatislogs/mybatis_demo.log.html" />
+		<param name="maxFileSize" value="1M" />
+		<param name="maxBackupIndex" value="5" />
+		<param name="append" value="true" />
+		<layout class="org.apache.log4j.HTMLLayout" />
+	</appender>
+
+	<!-- XML形式错误日志 -->
+	<appender name="file.xml.XML" class="org.apache.log4j.RollingFileAppender">
+		<param name="threshold" value="error" />
+		<param name="file" value="${catalina.home}/mybatislogs/mybatis_demo.log.xml" />
+		<param name="maxFileSize" value="1M" />
+		<param name="maxBackupIndex" value="5" />
+		<param name="append" value="true" />
+		<layout class="org.apache.log4j.xml.XMLLayout" />
+	</appender>
+	<!-- 邮件日志 -->
+	<appender name="mail.MAIL" class="org.apache.log4j.net.SMTPAppender">
+		<param name="threshold" value="debug" />
+		<param name="BufferSize" value="10" />
+		<param name="From" value="openwolf@163.com" />
+		<param name="SMTPHost" value="www.baidu.com" />
+		<param name="Subject" value="openwolf-log4j-Message" />
+		<param name="To" value="openwolf@163.com" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%-5p][%d{yyyy-MM-dd HH:mm:ss,SSS}][%c] :%m%n" />
+		</layout>
+	</appender>
+	<!-- SOCKET日志 -->
+	<appender name="remote.CHAINSAW" class="org.apache.log4j.net.SocketAppender">
+		<param name="threshold" value="fatal" />
+		<param name="remoteHost" value="localhost" />
+		<param name="port" value="18845" />
+		<param name="locationInfo" value="true" />
+	</appender>
+
+	<category name="com.chess" additivity="true">
+		<priority value="info" />
+		<appender-ref ref="console.CONSOLE" />
+	</category>
+
+	<category name="com.co" additivity="true">
+		<priority value="debug" />
+		<appender-ref ref="console.CONSOLE" />
+		<appender-ref ref="file.text.DATE.FILE" />
+	</category>
+	<category name="org" additivity="true">
+		<priority value="warn" />
+		<appender-ref ref="console.CONSOLE" />
+		<!-- <appender-ref ref="file.text.DATE_FILE"/> -->
+	</category>
+
+	<root>
+		<!-- <level value="trace" /> <level value="debug" /> <level value="info"
+            /> <level value="warn" /> <level value="error" /> <level value="fatal" /> -->
+		<appender-ref ref="console.CONSOLE" />
+		<appender-ref ref="file.text.DATE.FILE" />
+	</root>
+</log4j:configuration>
